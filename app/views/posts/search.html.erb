@@ -8,16 +8,17 @@
   <% if @posts.empty? %>
     <h2>No posts found matching your query.</h2>
   <% else %>
-    <h2>Search results</h2>
+    <h2>Resultados de la búsqueda</h2>
 
     <table style="width: 100%;">
       <thead>
          <tr>
-           <th>Author</th>
-           <th>Title</th>
+           <th>Autor</th>
+           <th>Título</th>
            <th>Tags</th>
-           <th>Published on</th>
-           <th>Actions</th>
+           <th>Publicado</th>
+           <th>Fecha de publicación</th>
+           <th>Acciones</th>
          </tr>
       </thead>
 
@@ -27,6 +28,7 @@
             <td><%= post.author %></td>
             <td><%= post.title %></td>
             <td><%= post.tags %></td>
+            <td><%= post.published %></td>
             <td><%= post.published_on %></td>
             <td><%= link_to 'View', post_path(post.id) %></td>
           </tr>
