@@ -48,6 +48,28 @@ class Post < ApplicationRecord
     })
   end
 
+  def self.search_fuzzy(query)
+    self.search({
+      query: {
+        bool: {
+          must: [
+          {
+            multi_match: {
+              query: query,
+              fields: [:author, :title, :body, :tags],
+              fuzziness: 'AUTO'
+            }
+          },
+          {
+            match: {
+              published: true
+            }
+          }]
+        }
+      }
+    })
+  end
+
   def self.indexation
     # Delete the previous articles index in Elasticsearch
     self.__elasticsearch__.client.indices.delete index: self.index_name rescue nil
