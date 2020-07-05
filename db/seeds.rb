@@ -42,3 +42,10 @@ post4.tags = 'complejo'
 post4.published = false
 post4.published_on = DateTime.now
 post4.save
+
+post5 = Post.create(title: 'Búsqueda de herramienta de comunicación en trabajo remoto', 
+  body: '<h1>herramientassssssss!</h1>',author: 'Xyz aba', tags: 'complejo', published: true, published_on: DateTime.now)
+
+post6 = Post.create(title: 'Investigación para el desarrollo de vacunas',
+  body: '<h1>vacunasssss en fase de prueba!</h1>',
+  author: 'Xyz aba', tags: 'complejo', published: true, published_on: DateTime.now)

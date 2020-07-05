@@ -16,6 +16,8 @@ class PostsController < ApplicationController
     query = params[:search_posts].presence && params[:search_posts][:query]
     if query.present?
       @posts = Post.search_published(query)
+      p "lista de posts"
+      p @posts.records
     else
       @posts = Post.all
     end
