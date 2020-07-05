@@ -70,6 +70,40 @@ class Post < ApplicationRecord
     })
   end
 
+  def self.search_highlight(query)
+    self.search({
+      query: {
+        bool: {
+          must: [
+          {
+            multi_match: {
+              query: query,
+              fields: [:author, :title, :body, :tags],
+              fuzziness: 'AUTO'
+            }
+          },
+          {
+            match: {
+              published: true
+            }
+          }]
+        }
+      },
+      highlight: {
+        pre_tags: ['<em>'],
+        post_tags: ['</em>'],
+        type: 'unified',
+        fragment_size: 100,
+        number_of_fragments: 5,
+        boundary_chars: '.,!? \t\n',
+        boundary_scanner: 'sentence',
+        fields: {
+          title: {}
+        }
+      }
+    })
+  end
+
   def self.indexation
     # Delete the previous articles index in Elasticsearch
     self.__elasticsearch__.client.indices.delete index: self.index_name rescue nil

@@ -16,7 +16,8 @@ class PostsController < ApplicationController
     query = params[:search_posts].presence && params[:search_posts][:query]
     if query.present?
       # @posts = Post.search_published(query)
-      @posts = Post.search_fuzzy(query)
+      # @posts = Post.search_fuzzy(query)
+      @posts = Post.search_highlight(query)
       p "lista de posts"
       p @posts.records
     else
