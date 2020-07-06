@@ -17,9 +17,13 @@ class PostsController < ApplicationController
     if query.present?
       # @posts = Post.search_published(query)
       # @posts = Post.search_fuzzy(query)
-      @posts = Post.search_highlight(query)
+      # @posts = Post.search_highlight(query)
+      @posts = Post.search_agregation(query)
       p "lista de posts"
       p @posts.records
+      p "agregations"
+      p @posts.aggregations.values[0].buckets
+      p "*************************************"
     else
       @posts = Post.all
     end

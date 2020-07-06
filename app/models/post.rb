@@ -6,7 +6,7 @@ class Post < ApplicationRecord
     filter: {
       spanish_stop: {
       type: "stop",
-      stopwords: "_spanish_" 
+      stopwords: "_spanish_"
       }
     },  
     analyzer: {
@@ -20,9 +20,10 @@ class Post < ApplicationRecord
     index: {number_of_shards: 1 } do
       mappings dynamic: false do
         indexes :author, type: :text, analyzer: :custom_analyzer
+        # Para type: 'fvh'in highlight se agrega  index_options: 'offsets', term_vector: 'with_positions_offsets'
         indexes :title, type: :text, analyzer: :custom_analyzer, index_options: 'offsets', term_vector: 'with_positions_offsets'
         indexes :body, type: :text, analyzer: :custom_analyzer
-        indexes :tags, type: :text, analyzer: :custom_analyzer
+        indexes :tags, type: 'keyword', null_value: 'NULL'
         indexes :published, type: :boolean
       end
   end
@@ -102,6 +103,47 @@ class Post < ApplicationRecord
         }
       }
     })
+  end
+
+  def self.search_agregation(query)
+    search = {
+      query: {
+        bool: {
+          must: [
+          {
+            multi_match: {
+              query: query,
+              fields: [:author, :title, :body, :tags],
+              fuzziness: 'AUTO'
+            }
+          },
+          {
+            match: {
+              published: true
+            }
+          }]
+        }
+      },
+      highlight: {
+        pre_tags: ['<strong>'],
+        post_tags: ['</strong>'],
+        type: 'fvh',
+        fragment_size: 100,
+        number_of_fragments: 5,
+        boundary_chars: '.,!? \t\n',
+        boundary_scanner: 'sentence',
+        fields: {
+          title: {}
+        }
+      },
+      aggs: {
+        tags: {
+          terms: { field: 'tags', size: 10 }
+        }
+      }
+    }
+
+    self.search(search)
   end
 
   def self.indexation
