@@ -23,6 +23,7 @@ class PostsController < ApplicationController
       p @posts.records
       p "agregations"
       p @posts.aggregations.values[0].buckets
+      p @posts.aggregations.values[0].buckets[0][:key]
       p "*************************************"
     else
       @posts = Post.all
