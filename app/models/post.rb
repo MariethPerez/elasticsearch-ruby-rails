@@ -20,7 +20,7 @@ class Post < ApplicationRecord
     index: {number_of_shards: 1 } do
       mappings dynamic: false do
         indexes :author, type: :text, analyzer: :custom_analyzer
-        indexes :title, type: :text, analyzer: :custom_analyzer
+        indexes :title, type: :text, analyzer: :custom_analyzer, index_options: 'offsets', term_vector: 'with_positions_offsets'
         indexes :body, type: :text, analyzer: :custom_analyzer
         indexes :tags, type: :text, analyzer: :custom_analyzer
         indexes :published, type: :boolean
@@ -90,9 +90,9 @@ class Post < ApplicationRecord
         }
       },
       highlight: {
-        pre_tags: ['<em>'],
-        post_tags: ['</em>'],
-        type: 'unified',
+        pre_tags: ['<strong>'],
+        post_tags: ['</strong>'],
+        type: 'fvh',
         fragment_size: 100,
         number_of_fragments: 5,
         boundary_chars: '.,!? \t\n',

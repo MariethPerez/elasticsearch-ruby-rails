@@ -26,7 +26,11 @@
         <% @posts.each do |post| %>
           <tr>
             <td><%= post.author %></td>
-            <td><%= post.title %></td>
+            <% if post.try(:highlight).try(:title) %>
+              <td><%= post.highlight.title[0].html_safe  %></td>
+            <%else%>
+              <td><%= post.title %></td>
+            <% end %>
             <td><%= post.tags %></td>
             <td><%= post.published %></td>
             <td><%= post.published_on %></td>
