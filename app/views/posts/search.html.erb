@@ -8,12 +8,11 @@
   <% if @posts.empty? %>
     <h2>No posts found matching your query.</h2>
   <% else %>
-    <%# <% if @posts.aggregations.present? %> %>
-      <%# <% @posts.aggregations.values[0].buckets.map do |bucket| %> %>
-        <%# <p><%= bucket[:key] %></p> %>
-        <%# <span><%= bucket[:doc_count] %></span> %>
-      <%# <% end %> %>
-    <%# <% end %> %>
+    <% if  @posts.respond_to?(:aggregations) %>
+      <% @posts.aggregations.values[0].buckets.map do |bucket| %>
+        <p><%= bucket[:key] %> <span><%= bucket[:doc_count] %></span> </p>
+      <% end %>
+    <% end %>
     <h2>Resultados de la búsqueda</h2>
     <table style="width: 100%;">
       <thead>
