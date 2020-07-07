@@ -23,6 +23,7 @@ class Post < ApplicationRecord
         # Para type: 'fvh'in highlight se agrega  index_options: 'offsets', term_vector: 'with_positions_offsets'
         indexes :title, type: :text, analyzer: :custom_analyzer, index_options: 'offsets', term_vector: 'with_positions_offsets'
         indexes :body, type: :text, analyzer: :custom_analyzer
+        # Para hacer agregation el campo debe tener el type 'keyword'
         indexes :tags, type: 'keyword', null_value: 'NULL'
         indexes :published, type: :boolean
       end
