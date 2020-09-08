@@ -139,7 +139,7 @@ class Post < ApplicationRecord
       },
       aggs: {
         tags: {
-          terms: { field: 'tags', size: 10 }
+          terms: { field: 'tags' }
         }
       }
     }
